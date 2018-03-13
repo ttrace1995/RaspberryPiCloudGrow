@@ -43,7 +43,7 @@ public class DataScheduler extends TimerTask {
        
     }
     
-    private static void sendDataToCloud(double temp, double humid) {
+    private static synchronized void sendDataToCloud(double temp, double humid) {
         TelemetryDataPoint telemetryDataPoint = new TelemetryDataPoint();
         telemetryDataPoint.deviceId = Constants.DEVICE_ID;
         telemetryDataPoint.temperature = temp;
@@ -52,6 +52,7 @@ public class DataScheduler extends TimerTask {
         
         String msgStr = telemetryDataPoint.serialize();
         Message msg = new Message(msgStr);
+        msg.setProperty("messageType", "temp_humid_data");
         msg.setMessageId(java.util.UUID.randomUUID().toString()); 
         System.out.println("Sending: " + msgStr);
         
@@ -68,7 +69,7 @@ public class DataScheduler extends TimerTask {
         }  
     }
     
-    public static void sendStateInfoToCloud() {
+    public static synchronized void sendStateInfoToCloud() {
         
         StateInfoDataPoint sidp = new StateInfoDataPoint();
         
@@ -90,6 +91,7 @@ public class DataScheduler extends TimerTask {
         
         String msgStr = sidp.serialize();
         Message msg = new Message(msgStr);
+        msg.setProperty("messageType", "state_data");
         msg.setMessageId(java.util.UUID.randomUUID().toString()); 
         System.out.println("Sending: " + msgStr);
         
