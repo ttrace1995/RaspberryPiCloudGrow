@@ -1,0 +1,7 @@
+## YAML Template.
+---
+#How often to send temperature and humidity data to the cloud
+DATA_TIME_DELAY: 20000
+
+#Boolean for if an automated grow is active or not
+AUTOMATED_GROW: false
