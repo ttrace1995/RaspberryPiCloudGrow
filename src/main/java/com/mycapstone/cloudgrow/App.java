@@ -51,8 +51,9 @@ public class App {
             switch (key) {
                 case "switch_command":
                      try {
-                        Utilities.changeStateSettings(val);
+                        Configuration.changeStateSettings(val);
                         CommandExecutor.executeStandardPythonCommand(val);
+                        DataScheduler.sendStateInfoToCloud();
                     } catch (IOException | InterruptedException ex) {
                         Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -156,6 +157,8 @@ public class App {
     public static void main( String[] args ) throws IOException, URISyntaxException {
         App.getCredentials();
         App.Init_System();
+        Configuration.loadPreviousStates();
+        DataScheduler.sendStateInfoToCloud();
         Utilities.StartDataScheduler();
         
     }
