@@ -11,8 +11,13 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.microsoft.azure.sdk.iot.device.*;
+import java.io.File;
+import java.io.FileReader;
 import java.sql.Time;
 import java.time.Instant;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -22,14 +27,20 @@ public class DataScheduler extends TimerTask {
 
     @Override
     public void run() {
+        getTempHumidData();
+    }
+    
+    public static void getTempHumidData() {
+        String data;
         try {
-            String data = CommandExecutor.executeReturnPythonCommand("temp.py");
-            double temp = Utilities.formatTempData(data);
+            data = CommandExecutor.executeReturnPythonCommand("temp.py");
+             double temp = Utilities.formatTempData(data);
             double humid = Utilities.formatHumidData(data);
             sendDataToCloud(temp, humid);
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(DataScheduler.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
     }
     
     private static void sendDataToCloud(double temp, double humid) {
@@ -41,7 +52,6 @@ public class DataScheduler extends TimerTask {
         
         String msgStr = telemetryDataPoint.serialize();
         Message msg = new Message(msgStr);
-        msg.setProperty("temperatureAlert", (temp > 30) ? "true" : "false");
         msg.setMessageId(java.util.UUID.randomUUID().toString()); 
         System.out.println("Sending: " + msgStr);
         
@@ -60,6 +70,40 @@ public class DataScheduler extends TimerTask {
     
     public static void sendStateInfoToCloud() {
         
+        StateInfoDataPoint sidp = new StateInfoDataPoint();
+        
+        try {
+            
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(Constants.PROJECT_DIRECTORY + File.separator + Constants.CONFIG_PROJECT_PATH + "states.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+            
+            sidp.lightState = (long) jsonObject.get("LIGHT_STATE");
+            sidp.fanState = (long) jsonObject.get("FAN_STATE");
+            sidp.pumpState = (long) jsonObject.get("PUMP_STATE");
+            sidp.timestamp = Instant.now().toString();
+            
+        } catch (IOException | ParseException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        
+        } 
+        
+        String msgStr = sidp.serialize();
+        Message msg = new Message(msgStr);
+        msg.setMessageId(java.util.UUID.randomUUID().toString()); 
+        System.out.println("Sending: " + msgStr);
+        
+        Object lockobj = new Object();
+        EventCallback callback = new EventCallback();
+        App.client.sendEventAsync(msg, callback, lockobj);
+
+        synchronized (lockobj) {
+            try {
+                lockobj.wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(DataScheduler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     private static class TelemetryDataPoint {
@@ -75,7 +119,15 @@ public class DataScheduler extends TimerTask {
     }
     
     private static class StateInfoDataPoint {
+        public long lightState;
+        public long fanState;
+        public long pumpState;
+        public String timestamp;
         
+        public String serialize() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+        }
     }
     
     public static class EventCallback implements IotHubEventCallback {

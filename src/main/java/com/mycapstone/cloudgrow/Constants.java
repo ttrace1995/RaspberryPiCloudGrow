@@ -18,6 +18,7 @@ public class Constants {
     private Constants() { }
     
     public static final Lock IMAGE_LOCK = new ReentrantLock();
+    public static final Lock CONFIG_LOCK = new ReentrantLock();
     
     //20 seconds
     public static int DEFAULT_TIME_DELAY = 20000;

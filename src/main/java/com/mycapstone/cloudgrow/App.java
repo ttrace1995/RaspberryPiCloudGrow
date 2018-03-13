@@ -67,6 +67,9 @@ public class App {
                         Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
+                case "refresh":
+                    DataScheduler.getTempHumidData();
+                    DataScheduler.sendStateInfoToCloud();
                 default:
                     break;
             }
@@ -155,10 +158,9 @@ public class App {
     }
     
     public static void main( String[] args ) throws IOException, URISyntaxException {
+        Configuration.loadPreviousStates();
         App.getCredentials();
         App.Init_System();
-        Configuration.loadPreviousStates();
-        DataScheduler.sendStateInfoToCloud();
         Utilities.StartDataScheduler();
         
     }
