@@ -7,6 +7,17 @@ package com.mycapstone.cloudgrow;
 
 import java.io.File;
 import java.util.Timer;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+
 
 /**
  *
@@ -67,5 +78,75 @@ public class Utilities {
         double doubleHumid = Double.valueOf(humid);
         
         return doubleHumid;
+    }
+    
+    public static synchronized void changeStateSettings (String val) {
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(Constants.PROJECT_DIRECTORY + File.separator + Constants.CONFIG_PROJECT_PATH + "state.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+            
+            switch (val) {
+                case "lightOn.py":
+                    jsonObject.replace("LIGHT_SETTING", 1);
+                    break;
+                case "lightOff.py":
+                    jsonObject.replace("LIGHT_SETTING", 0);
+                    break;
+                case "fanOn.py":
+                    jsonObject.replace("FAN_SETTING", 1);
+                    break;
+                case "fanOff.py":
+                    jsonObject.replace("FAN_SETTING", 0);
+                    break;
+                case "pumpOn.py":
+                    jsonObject.replace("PUMP_SETTING", 1);
+                    break;
+                case "pumpOff.py":
+                    jsonObject.replace("PUMP_SETTING", 0);
+                    break;
+                default:
+                    break;
+            }
+                    
+            FileWriter writer = new FileWriter(Constants.PROJECT_DIRECTORY + File.separator + Constants.CONFIG_PROJECT_PATH + "state.json");
+            writer.write(jsonObject.toJSONString());
+            writer.flush();
+            
+        } catch (IOException | ParseException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static synchronized void changeStateCurrent (String val) {
+      
+        try {
+            
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(Constants.PROJECT_DIRECTORY + File.separator + Constants.CONFIG_PROJECT_PATH + "state.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+            
+            if (val.contains("light") == true) {
+                String lightState = CommandExecutor.executeReturnPythonCommand("stateCheckLight.py");
+                jsonObject.replace("LIGHT_STATE", Integer.valueOf(lightState));
+            }
+            else if (val.contains("fan") == true) {
+                String fanState = CommandExecutor.executeReturnPythonCommand("stateCheckFan.py");
+                jsonObject.replace("FAN_STATE", Integer.valueOf(fanState));
+            }
+            else {
+                String pumpState = CommandExecutor.executeReturnPythonCommand("stateCheckPump.py");
+                jsonObject.replace("PUMP_STATE", Integer.valueOf(pumpState));
+            }
+            
+            FileWriter writer = new FileWriter(Constants.PROJECT_DIRECTORY + File.separator + Constants.CONFIG_PROJECT_PATH + "state.json");
+            writer.write(jsonObject.toJSONString());
+            writer.flush();
+            
+        } catch (IOException | ParseException | InterruptedException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
 }

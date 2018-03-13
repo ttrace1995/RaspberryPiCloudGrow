@@ -50,11 +50,13 @@ public class App {
             
             switch (key) {
                 case "switch_command":
-                    try {
+                     try {
+                        Utilities.changeStateSettings(val);
                         CommandExecutor.executeStandardPythonCommand(val);
-                    } catch (IOException ex) {
+                    } catch (IOException | InterruptedException ex) {
                         Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-                    }   break;
+                    }
+                        break;
                     
                 case "take_photo":
                     try {
@@ -155,5 +157,6 @@ public class App {
         App.getCredentials();
         App.Init_System();
         Utilities.StartDataScheduler();
+        
     }
 }

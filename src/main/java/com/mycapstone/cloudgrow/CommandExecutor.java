@@ -26,9 +26,11 @@ public class CommandExecutor {
     public static String Image_File_Name;
     public static RPiCamera piCamera;
     
-    public static synchronized void executeStandardPythonCommand(String scriptName) throws IOException {
+    public static synchronized void executeStandardPythonCommand(String scriptName) throws IOException, InterruptedException {
         String command = Constants.PYTHON_CMD + Constants.PROJECT_DIRECTORY + Constants.PYTHON_PROJECT_PATH + scriptName;
         Process p = Runtime.getRuntime().exec(command);
+        p.waitFor();
+        Utilities.changeStateCurrent(scriptName);
     } 
     
     public static synchronized String executeReturnPythonCommand( String scriptName ) throws IOException, InterruptedException {

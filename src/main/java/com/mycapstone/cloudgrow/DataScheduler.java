@@ -11,11 +11,8 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.microsoft.azure.sdk.iot.device.*;
-import java.io.*;
-import java.net.URISyntaxException;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
+import java.sql.Time;
+import java.time.Instant;
 
 /**
  *
@@ -40,6 +37,7 @@ public class DataScheduler extends TimerTask {
         telemetryDataPoint.deviceId = Constants.DEVICE_ID;
         telemetryDataPoint.temperature = temp;
         telemetryDataPoint.humidity = humid;
+        telemetryDataPoint.timestamp = Instant.now().toString();
         
         String msgStr = telemetryDataPoint.serialize();
         Message msg = new Message(msgStr);
@@ -60,10 +58,15 @@ public class DataScheduler extends TimerTask {
         }  
     }
     
+    public static void sendStateInfoToCloud() {
+        
+    }
+    
     private static class TelemetryDataPoint {
         public String deviceId;
         public double temperature;
         public double humidity;
+        public String timestamp;
 
         public String serialize() {
         Gson gson = new Gson();
@@ -71,7 +74,11 @@ public class DataScheduler extends TimerTask {
         }
     }
     
-    private static class EventCallback implements IotHubEventCallback {
+    private static class StateInfoDataPoint {
+        
+    }
+    
+    public static class EventCallback implements IotHubEventCallback {
         @Override
         public void execute(IotHubStatusCode status, Object context) {
             System.out.println("IoT Hub responded to message with status: " + status.name());

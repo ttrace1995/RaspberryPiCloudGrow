@@ -24,6 +24,7 @@ public class Constants {
     
     public static final String PROJECT_DIRECTORY = "/home/pi/NetBeansProjects/CloudGrow";
     public static final String PYTHON_PROJECT_PATH = "/src/main/java/com/mycapstone/cloudgrow/python/";
+    public static final String CONFIG_PROJECT_PATH = "/src/main/java/com/mycapstone/cloudgrow/configuration/";
     public static final String IMAGE_PROJECT_PATH = "/src/main/java/com/mycapstone/cloudgrow/image/";
     public static final String PYTHON_CMD = "python ";
     
