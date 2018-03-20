@@ -60,13 +60,13 @@ public class DataScheduler extends TimerTask {
         EventCallback callback = new EventCallback();
         App.client.sendEventAsync(msg, callback, lockobj);
 
-        synchronized (lockobj) {
-            try {
-                lockobj.wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DataScheduler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }  
+//        synchronized (lockobj) {
+//            try {
+//                lockobj.wait();
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(DataScheduler.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }  
     }
     
     public static synchronized void sendStateInfoToCloud() {
@@ -99,13 +99,13 @@ public class DataScheduler extends TimerTask {
         EventCallback callback = new EventCallback();
         App.client.sendEventAsync(msg, callback, lockobj);
 
-        synchronized (lockobj) {
-            try {
-                lockobj.wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DataScheduler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+//        synchronized (lockobj) {
+//            try {
+//                lockobj.wait();
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(DataScheduler.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
     }
     
     private static class TelemetryDataPoint {

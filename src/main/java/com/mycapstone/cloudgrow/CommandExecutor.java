@@ -52,7 +52,7 @@ public class CommandExecutor {
     
     public static synchronized void takePhoto() throws FailedToRunRaspistillException, IOException, InterruptedException {
         
-        Constants.IMAGE_LOCK.lock();
+        //Constants.IMAGE_LOCK.lock();
         
         Image_File_Name = Instant.now().toString()+".png";
         piCamera = new RPiCamera(Constants.IMAGE_FILE_PATH);

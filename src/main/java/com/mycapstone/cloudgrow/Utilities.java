@@ -5,17 +5,9 @@
  */
 package com.mycapstone.cloudgrow;
 
-import java.io.File;
 import java.util.Timer;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+
 
 
 
@@ -46,7 +38,7 @@ public class Utilities {
         else {
             System.out.println("Something went wrong trying to delete " + CommandExecutor.Image_File_Name);
         }
-        Constants.IMAGE_LOCK.unlock();
+        //Constants.IMAGE_LOCK.unlock();
     }
     
     public static double formatTempData(String data) {

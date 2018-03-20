@@ -84,7 +84,7 @@ public class App {
     protected static class FileUploadStatusCallBack implements IotHubEventCallback {
         @Override
         public void execute(IotHubStatusCode status, Object context) {
-            System.out.println("IoT Hub responded to file upload for theimage operation with status " + status.name());
+            System.out.println("IoT Hub responded to file upload for the image operation with status " + status.name());
             
             if (status.name().equals(Constants.OK_EMPTY)) {
                 Utilities.deleteLocalImage();

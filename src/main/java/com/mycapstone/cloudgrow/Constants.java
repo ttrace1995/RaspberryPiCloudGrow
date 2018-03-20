@@ -21,7 +21,7 @@ public class Constants {
     public static final Lock CONFIG_LOCK = new ReentrantLock();
     
     //20 seconds
-    public static int DEFAULT_TIME_DELAY = 20000;
+    public static int DEFAULT_TIME_DELAY = 60000;
     
     public static final String PROJECT_DIRECTORY = "/home/pi/NetBeansProjects/CloudGrow";
     public static final String PYTHON_PROJECT_PATH = "/src/main/java/com/mycapstone/cloudgrow/python/";
