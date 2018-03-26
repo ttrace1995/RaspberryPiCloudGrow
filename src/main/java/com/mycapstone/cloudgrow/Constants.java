@@ -20,7 +20,7 @@ public class Constants {
     public static final Lock IMAGE_LOCK = new ReentrantLock();
     public static final Lock CONFIG_LOCK = new ReentrantLock();
     
-    //20 seconds
+    //60 seconds
     public static int DEFAULT_TIME_DELAY = 60000;
     
     public static final String PROJECT_DIRECTORY = "/home/pi/NetBeansProjects/CloudGrow";
@@ -30,8 +30,8 @@ public class Constants {
     public static final String PYTHON_CMD = "python ";
     
     public static final IotHubClientProtocol PROTOCOL = IotHubClientProtocol.MQTT;
-    public static final String IOTHUB_CONNECTION_STRING = "HostName=CapstoneHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=dEcKcNThk3JKf1Ord2xjjdwbi7you4f362d0rmIT4X8=";
-    public static final String DEVICE_ID = "CloudGrowDevice";
+    public static final String IOTHUB_CONNECTION_STRING = "HostName=CanonTestHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=WCUlILPQnuyqoJLFxL2tMNAl/Ro4h5ofMZgEiqSUQmU=";
+    public static final String DEVICE_ID = "CloudGrow";
     
     public static final String OK_EMPTY = "OK_EMPTY";
     

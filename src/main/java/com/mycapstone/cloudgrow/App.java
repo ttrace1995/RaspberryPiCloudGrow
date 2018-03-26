@@ -123,7 +123,7 @@ public class App {
             // device you created.     
             System.out.println(Constants.DEVICE_ID);
             devicePrimaryKey = device.getPrimaryKey();
-            deviceConnectionString = "HostName=CapstoneHub.azure-devices.net;DeviceId="+Constants.DEVICE_ID+";SharedAccessKey="+devicePrimaryKey;
+            deviceConnectionString = "HostName=CanonTestHub.azure-devices.net;DeviceId="+Constants.DEVICE_ID+";SharedAccessKey="+devicePrimaryKey;
         
         }
         catch (IOException | JsonSyntaxException | IllegalArgumentException | NoSuchAlgorithmException e) {
